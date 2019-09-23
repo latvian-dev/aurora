@@ -7,7 +7,8 @@ import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 @Mod(
 		modid = Aurora.MOD_ID,
 		name = Aurora.MOD_NAME,
-		version = Aurora.VERSION
+		version = Aurora.VERSION,
+		acceptableRemoteVersions = "*"
 )
 public class Aurora
 {

@@ -1,10 +1,8 @@
 package dev.latvian.mods.aurora;
 
-import dev.latvian.mods.aurora.page.HomePageEntry;
+import dev.latvian.mods.aurora.page.HomePage;
 import dev.latvian.mods.aurora.page.WebPage;
 import dev.latvian.mods.aurora.page.WebPageNotFound;
-import dev.latvian.mods.aurora.tag.PairedTag;
-import dev.latvian.mods.aurora.tag.Tag;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
@@ -29,9 +27,6 @@ import io.netty.handler.codec.http.HttpVersion;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.MinecraftForge;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * @author LatvianModder
  */
@@ -42,6 +37,8 @@ public class AuroraServer
 	private ChannelFuture channel;
 	private final EventLoopGroup masterGroup;
 	private final EventLoopGroup slaveGroup;
+
+	private byte[] iconBytes = null;
 
 	public AuroraServer(MinecraftServer s, int p)
 	{
@@ -79,75 +76,7 @@ public class AuroraServer
 						{
 							if (msg instanceof FullHttpRequest)
 							{
-								FullHttpRequest request = (FullHttpRequest) msg;
-								String uri = request.uri();
-								WebPage page;
-
-								while (uri.startsWith("/"))
-								{
-									uri = uri.substring(1);
-								}
-
-								while (uri.endsWith("/"))
-								{
-									uri = uri.substring(0, uri.length() - 1);
-								}
-
-								if (uri.isEmpty())
-								{
-									Tag http = new PairedTag("http");
-									page = http;
-
-									Tag head = http.paired("head");
-									head.paired("title", "Aurora");
-
-									Tag body = http.paired("body");
-
-									Tag list = body.ol();
-
-									List<HomePageEntry> entries = new ArrayList<>();
-									MinecraftForge.EVENT_BUS.post(new AuroraHomePageEvent(AuroraServer.this, entries::add));
-									entries.sort(null);
-
-									for (HomePageEntry entry : entries)
-									{
-										Tag li = list.li();
-
-										if (!entry.icon.isEmpty())
-										{
-											li.img(entry.icon);
-										}
-
-										li.a(entry.title, "/" + entry.url);
-									}
-								}
-								else
-								{
-									AuroraPageEvent event = new AuroraPageEvent(AuroraServer.this, request, uri);
-									MinecraftForge.EVENT_BUS.post(event);
-
-									if (event.getPage() == null)
-									{
-										page = new WebPageNotFound(event.getUri());
-									}
-									else
-									{
-										page = event.getPage();
-									}
-								}
-
-								String content = page.getContent();
-								FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, page.getStatus(), Unpooled.copiedBuffer(content.getBytes()));
-
-								if (HttpUtil.isKeepAlive(request))
-								{
-									response.headers().set(HttpHeaderNames.CONNECTION, HttpHeaderValues.KEEP_ALIVE);
-								}
-
-								response.headers().set(HttpHeaderNames.CONTENT_TYPE, page.getContentType());
-								response.headers().set(HttpHeaderNames.CONTENT_LENGTH, content.length());
-
-								ctx.writeAndFlush(response);
+								handleRequest(ctx, (FullHttpRequest) msg);
 							}
 							else
 							{
@@ -191,5 +120,53 @@ public class AuroraServer
 		catch (InterruptedException ignored)
 		{
 		}
+	}
+
+	private void handleRequest(ChannelHandlerContext ctx, FullHttpRequest request)
+	{
+		String uri = request.uri();
+		WebPage page;
+
+		while (uri.startsWith("/"))
+		{
+			uri = uri.substring(1);
+		}
+
+		while (uri.endsWith("/"))
+		{
+			uri = uri.substring(0, uri.length() - 1);
+		}
+
+		if (uri.isEmpty())
+		{
+			page = new HomePage(this);
+		}
+		else
+		{
+			AuroraPageEvent event = new AuroraPageEvent(this, request, uri);
+			MinecraftForge.EVENT_BUS.post(event);
+
+			if (event.getPage() == null)
+			{
+				page = new WebPageNotFound(event.getUri());
+			}
+			else
+			{
+				page = event.getPage();
+			}
+		}
+
+		String content = page.getContent();
+		FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, page.getStatus(), Unpooled.copiedBuffer(content.getBytes()));
+
+		if (HttpUtil.isKeepAlive(request))
+		{
+			response.headers().set(HttpHeaderNames.CONNECTION, HttpHeaderValues.KEEP_ALIVE);
+		}
+
+		response.headers().set(HttpHeaderNames.CONTENT_TYPE, page.getContentType());
+		response.headers().set(HttpHeaderNames.CONTENT_LENGTH, content.length());
+
+		ctx.writeAndFlush(response);
 	}
 }

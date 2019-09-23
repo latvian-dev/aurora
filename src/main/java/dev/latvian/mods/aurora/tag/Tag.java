@@ -49,6 +49,11 @@ public abstract class Tag extends TagBase
 		return attr("id", id);
 	}
 
+	public Tag meta(String name, String content)
+	{
+		return unpaired("meta").attr("name", name).attr("content", content);
+	}
+
 	public Tag addClass(String c)
 	{
 		if (c.isEmpty())
