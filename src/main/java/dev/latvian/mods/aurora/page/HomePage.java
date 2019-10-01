@@ -5,9 +5,6 @@ import dev.latvian.mods.aurora.AuroraServer;
 import dev.latvian.mods.aurora.tag.Tag;
 import net.minecraftforge.common.MinecraftForge;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * @author LatvianModder
  */
@@ -35,22 +32,29 @@ public class HomePage extends HTTPWebPage
 	@Override
 	public void body(Tag body)
 	{
-		Tag list = body.ol();
+		HomePageEntry entry = new HomePageEntry(getTitle(), "", getIcon());
+		MinecraftForge.EVENT_BUS.post(new AuroraHomePageEvent(server, entry));
+		entry.entries.sort(null);
+		addEntries(body.ol().style("width", "max-content").style("margin", "auto"), entry, "");
+	}
 
-		List<HomePageEntry> entries = new ArrayList<>();
-		MinecraftForge.EVENT_BUS.post(new AuroraHomePageEvent(server, entries::add));
-		entries.sort(null);
-
-		for (HomePageEntry entry : entries)
+	private void addEntries(Tag list, HomePageEntry entry, String u)
+	{
+		for (HomePageEntry e : entry.entries)
 		{
 			Tag li = list.li();
 
-			if (!entry.icon.isEmpty())
+			if (!e.icon.isEmpty())
 			{
-				li.img(entry.icon);
+				li.img(e.icon).style("height", "1em");
 			}
 
-			li.a(entry.title, "/" + entry.url);
+			li.a(e.title, u + "/" + e.url);
+
+			if (!e.entries.isEmpty())
+			{
+				addEntries(list.ol(), e, u + "/" + e.url);
+			}
 		}
 	}
 }

@@ -5,19 +5,14 @@ import com.google.gson.JsonElement;
 /**
  * @author LatvianModder
  */
-public class JsonWebPage implements WebPage
+public abstract class JsonWebPage implements WebPage
 {
-	private final JsonElement element;
-
-	public JsonWebPage(JsonElement e)
-	{
-		element = e;
-	}
+	public abstract JsonElement getJson();
 
 	@Override
 	public String getContent()
 	{
-		return element.toString();
+		return getJson().toString();
 	}
 
 	@Override

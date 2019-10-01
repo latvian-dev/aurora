@@ -31,23 +31,26 @@ public abstract class HTTPWebPage implements WebPage
 
 	public String getStylesheet()
 	{
-		return "https://kubejs.latvian.dev/style.css";
+		return "https://aurora.latvian.dev/style.css";
 	}
 
 	public String getIcon()
 	{
-		return "https://files.latmod.com/public/aurora.gif";
+		return "https://aurora.latvian.dev/logo.gif";
 	}
 
 	public void head(Tag head)
 	{
-		head.paired("title", getTitle());
-
 		String d = getDescription();
 
 		if (!d.isEmpty())
 		{
+			head.paired("title", getTitle() + " - " + d);
 			head.meta("description", d);
+		}
+		else
+		{
+			head.paired("title", getTitle());
 		}
 
 		head.unpaired("link").attr("rel", "icon").attr("href", getIcon());
@@ -62,7 +65,5 @@ public abstract class HTTPWebPage implements WebPage
 		head.meta("viewport", "width=device-width, initial-scale=1.0");
 	}
 
-	public void body(Tag body)
-	{
-	}
+	public abstract void body(Tag body);
 }

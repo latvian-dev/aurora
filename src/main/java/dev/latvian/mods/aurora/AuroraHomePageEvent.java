@@ -3,20 +3,18 @@ package dev.latvian.mods.aurora;
 import dev.latvian.mods.aurora.page.HomePageEntry;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
-import java.util.function.Consumer;
-
 /**
  * @author LatvianModder
  */
 public class AuroraHomePageEvent extends Event
 {
 	private final AuroraServer server;
-	private Consumer<HomePageEntry> callback;
+	private HomePageEntry entry;
 
-	public AuroraHomePageEvent(AuroraServer s, Consumer<HomePageEntry> c)
+	public AuroraHomePageEvent(AuroraServer s, HomePageEntry e)
 	{
 		server = s;
-		callback = c;
+		entry = e;
 	}
 
 	public AuroraServer getAuroraServer()
@@ -24,10 +22,8 @@ public class AuroraHomePageEvent extends Event
 		return server;
 	}
 
-	public HomePageEntry add(String title, String url)
+	public void add(HomePageEntry e)
 	{
-		HomePageEntry entry = new HomePageEntry(title, url);
-		callback.accept(entry);
-		return entry;
+		entry.add(e);
 	}
 }

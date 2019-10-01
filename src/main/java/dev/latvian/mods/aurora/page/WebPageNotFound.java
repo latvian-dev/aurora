@@ -1,11 +1,12 @@
 package dev.latvian.mods.aurora.page;
 
+import dev.latvian.mods.aurora.tag.Tag;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
 /**
  * @author LatvianModder
  */
-public class WebPageNotFound implements WebPage
+public class WebPageNotFound extends HTTPWebPage
 {
 	private final String uri;
 
@@ -15,25 +16,20 @@ public class WebPageNotFound implements WebPage
 	}
 
 	@Override
-	public String getContent()
+	public String getDescription()
 	{
-		StringBuilder r = new StringBuilder("<!DOCTYPE http>");
+		return "Page not found";
+	}
 
-		r.append("<http>");
+	@Override
+	public void body(Tag body)
+	{
+		Tag text = body.h1("");
+		text.text("Error! Page ");
+		text.span(uri, "error");
+		text.text(" not found!");
 
-		r.append("<head>");
-		r.append("<title>FTB Utilities Management</title>");
-		//r.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://kubejs.latvian.dev/style.css\">");
-		//r.append("<link rel=\"icon\" href=\"https://kubejs.latvian.dev/logo_48.png\">");
-		r.append("</head>");
-
-		r.append("<body>");
-		r.append("<h1>Error! Page ").append(uri).append(" not found</h1>");
-
-		r.append("</body>");
-
-		r.append("</http>");
-		return r.toString();
+		body.h3("").a("< Back to index", "/");
 	}
 
 	@Override

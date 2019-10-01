@@ -1,5 +1,6 @@
 package dev.latvian.mods.aurora;
 
+import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
@@ -21,15 +22,25 @@ public class Aurora
 	@Mod.EventHandler
 	public void onServerStarting(FMLServerStartingEvent event)
 	{
-		if (server == null)
-		{
-			server = new AuroraServer(event.getServer(), AuroraConfig.port);
-			server.start();
-		}
+		start(event.getServer());
 	}
 
 	@Mod.EventHandler
 	public void onServerStopping(FMLServerStoppingEvent event)
+	{
+		stop();
+	}
+
+	public static void start(MinecraftServer s)
+	{
+		if (server == null)
+		{
+			server = new AuroraServer(s, AuroraConfig.port);
+			server.start();
+		}
+	}
+
+	public static void stop()
 	{
 		if (server != null)
 		{

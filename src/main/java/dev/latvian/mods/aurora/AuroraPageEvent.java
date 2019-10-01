@@ -16,6 +16,7 @@ public class AuroraPageEvent extends Event
 	private final AuroraServer server;
 	private final FullHttpRequest request;
 	private final String uri;
+	private final String[] splitUri;
 	private WebPage page;
 
 	public AuroraPageEvent(AuroraServer s, FullHttpRequest r, String u)
@@ -23,6 +24,12 @@ public class AuroraPageEvent extends Event
 		server = s;
 		request = r;
 		uri = u;
+		splitUri = uri.split("/");
+	}
+
+	public AuroraServer getAuroraServer()
+	{
+		return server;
 	}
 
 	public FullHttpRequest getRequest()
@@ -33,6 +40,11 @@ public class AuroraPageEvent extends Event
 	public String getUri()
 	{
 		return uri;
+	}
+
+	public String[] getSplitUri()
+	{
+		return splitUri;
 	}
 
 	@Nullable

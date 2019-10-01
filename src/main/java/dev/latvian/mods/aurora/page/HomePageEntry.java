@@ -1,32 +1,41 @@
 package dev.latvian.mods.aurora.page;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author LatvianModder
  */
-public class HomePageEntry
+public class HomePageEntry implements Comparable<HomePageEntry>
 {
 	public final String title;
 	public final String url;
 	public String icon;
-	public boolean requiresSecure;
+	public final List<HomePageEntry> entries;
 
 	public HomePageEntry(String t, String u)
 	{
 		title = t;
 		url = u;
 		icon = "";
-		requiresSecure = false;
+		entries = new ArrayList<>();
 	}
 
-	public HomePageEntry icon(String i)
+	public HomePageEntry(String t, String u, String i)
 	{
+		this(t, u);
 		icon = i;
+	}
+
+	public HomePageEntry add(HomePageEntry entry)
+	{
+		entries.add(entry);
 		return this;
 	}
 
-	public HomePageEntry requiresSecure()
+	@Override
+	public int compareTo(HomePageEntry o)
 	{
-		requiresSecure = true;
-		return this;
+		return title.compareToIgnoreCase(o.title);
 	}
 }

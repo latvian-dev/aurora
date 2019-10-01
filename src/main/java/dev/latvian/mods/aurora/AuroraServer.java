@@ -27,6 +27,9 @@ import io.netty.handler.codec.http.HttpVersion;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.MinecraftForge;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 /**
  * @author LatvianModder
  */
@@ -156,7 +159,26 @@ public class AuroraServer
 			}
 		}
 
-		String content = page.getContent();
+		String content;
+		String contentType;
+
+		try
+		{
+			content = page.getContent();
+			contentType = page.getContentType();
+		}
+		catch (Exception ex)
+		{
+			ex.printStackTrace();
+			StringWriter writer = new StringWriter();
+			PrintWriter printWriter = new PrintWriter(writer);
+			printWriter.println("Error!");
+			printWriter.println();
+			ex.printStackTrace(printWriter);
+			content = writer.toString();
+			contentType = "text/plain";
+		}
+
 		FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, page.getStatus(), Unpooled.copiedBuffer(content.getBytes()));
 
 		if (HttpUtil.isKeepAlive(request))
@@ -164,9 +186,14 @@ public class AuroraServer
 			response.headers().set(HttpHeaderNames.CONNECTION, HttpHeaderValues.KEEP_ALIVE);
 		}
 
-		response.headers().set(HttpHeaderNames.CONTENT_TYPE, page.getContentType());
+		response.headers().set(HttpHeaderNames.CONTENT_TYPE, contentType);
 		response.headers().set(HttpHeaderNames.CONTENT_LENGTH, content.length());
-
+		response.headers().set(HttpHeaderNames.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
 		ctx.writeAndFlush(response);
+	}
+
+	public boolean allow(String uri)
+	{
+		return true;
 	}
 }
