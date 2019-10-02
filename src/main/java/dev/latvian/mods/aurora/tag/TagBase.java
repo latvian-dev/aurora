@@ -7,6 +7,8 @@ import dev.latvian.mods.aurora.page.WebPage;
  */
 public abstract class TagBase implements WebPage
 {
+	public PairedTag parent;
+	
 	public abstract void build(StringBuilder builder);
 
 	public abstract String getAttribute(String key);

@@ -17,8 +17,7 @@ public class PairedTag extends Tag
 
 		if (!t.isEmpty())
 		{
-			children = new LinkedList<>();
-			children.add(new TextTag(t));
+			append(new TextTag(t));
 		}
 	}
 
@@ -71,6 +70,7 @@ public class PairedTag extends Tag
 		}
 
 		children.add(child);
+		child.parent = this;
 		return child;
 	}
 }
