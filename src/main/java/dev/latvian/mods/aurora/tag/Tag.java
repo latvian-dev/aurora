@@ -17,6 +17,12 @@ public abstract class Tag extends TagBase
 	}
 
 	@Override
+	public boolean isEmpty()
+	{
+		return false;
+	}
+
+	@Override
 	public String getAttribute(String key)
 	{
 		return attributes == null || attributes.isEmpty() ? "" : attributes.getOrDefault(key, "");

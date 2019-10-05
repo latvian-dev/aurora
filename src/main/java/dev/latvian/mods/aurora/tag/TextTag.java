@@ -13,6 +13,12 @@ public class TextTag extends TagBase
 	}
 
 	@Override
+	public boolean isEmpty()
+	{
+		return text.isEmpty();
+	}
+
+	@Override
 	public void build(StringBuilder builder)
 	{
 		if (!text.isEmpty())

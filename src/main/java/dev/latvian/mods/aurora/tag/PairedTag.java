@@ -23,7 +23,7 @@ public class PairedTag extends Tag
 
 	public PairedTag(String n)
 	{
-		this(n, "");
+		super(n);
 	}
 
 	@Override
