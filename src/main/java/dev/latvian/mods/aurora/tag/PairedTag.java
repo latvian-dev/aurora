@@ -9,7 +9,7 @@ import java.util.Map;
  */
 public class PairedTag extends Tag
 {
-	private List<TagBase> children;
+	public List<TagBase> children;
 
 	public PairedTag(String n, String t)
 	{

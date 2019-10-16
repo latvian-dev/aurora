@@ -33,4 +33,18 @@ public class UnpairedTag extends Tag
 
 		builder.append('>');
 	}
+
+	@Override
+	public Tag tooltip()
+	{
+		int index = parent.children.indexOf(this);
+		PairedTag div = new PairedTag("div");
+		div.parent = parent;
+		parent.children.set(index, div);
+		div.addClass("tooltip");
+		div.append(this);
+		Tag div2 = div.paired("div");
+		div2.addClass("tooltiptext");
+		return div2;
+	}
 }

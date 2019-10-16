@@ -183,4 +183,28 @@ public abstract class Tag extends TagBase
 	{
 		return paired("td");
 	}
+
+	public Tag tooltip()
+	{
+		addClass("tooltip");
+		Tag div = paired("div");
+		div.addClass("tooltiptext");
+		return div;
+	}
+
+	public Tag tooltip(String text)
+	{
+		tooltip().text(text);
+		return this;
+	}
+
+	public Tag icon(String name)
+	{
+		return img("https://aurora.latvian.dev/icons/" + name + ".png").addClass("icon");
+	}
+
+	public Tag yesNoSpan(boolean value)
+	{
+		return span(value ? "Yes" : "No", value ? "yes" : "no");
+	}
 }
