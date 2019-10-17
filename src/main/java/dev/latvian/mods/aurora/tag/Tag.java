@@ -1,5 +1,7 @@
 package dev.latvian.mods.aurora.tag;
 
+import net.minecraft.util.text.TextFormatting;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -8,6 +10,11 @@ import java.util.Map;
  */
 public abstract class Tag extends TagBase
 {
+	public static String fixHTML(String string)
+	{
+		return string.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;");
+	}
+
 	public final String name;
 	protected Map<String, String> attributes;
 
@@ -42,6 +49,38 @@ public abstract class Tag extends TagBase
 	public Tag title(String title)
 	{
 		return attr("title", title);
+	}
+
+	public Tag title(Iterable<String> title)
+	{
+		StringBuilder sb = new StringBuilder();
+		boolean first = true;
+
+		for (String t : title)
+		{
+			String s = TextFormatting.getTextWithoutFormattingCodes(t);
+
+			if (first)
+			{
+				first = false;
+			}
+			else
+			{
+				sb.append('\n');
+			}
+
+			sb.append(s);
+			sb.append(' ');
+		}
+
+		return title(sb.toString());
+	}
+
+	public Style style()
+	{
+		Style style = new Style();
+		append(style);
+		return style;
 	}
 
 	public Tag style(String key, String value)

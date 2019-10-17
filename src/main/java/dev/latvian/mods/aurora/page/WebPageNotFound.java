@@ -28,8 +28,6 @@ public class WebPageNotFound extends HTTPWebPage
 		text.text("Error! Page ");
 		text.span(uri, "error");
 		text.text(" not found!");
-
-		body.h3("").a("< Back to index", "/");
 	}
 
 	@Override

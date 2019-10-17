@@ -26,10 +26,4 @@ public class TextTag extends TagBase
 			builder.append(text.replace("<", "&lt;").replace(">", "&gt;"));
 		}
 	}
-
-	@Override
-	public String getAttribute(String key)
-	{
-		return "";
-	}
 }

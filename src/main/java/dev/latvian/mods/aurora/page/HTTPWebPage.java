@@ -15,7 +15,14 @@ public abstract class HTTPWebPage implements WebPage
 		Tag head = http.paired("head");
 		head.unpaired("meta").attr("charset", "UTF-8");
 		head(head);
-		body(http.paired("body"));
+		Tag body = http.paired("body");
+		body(body);
+
+		if (addBackButton())
+		{
+			body.h3("").a("< Back to Aurora index page", "/");
+		}
+
 		return http.getContent();
 	}
 
@@ -37,6 +44,11 @@ public abstract class HTTPWebPage implements WebPage
 	public String getIcon()
 	{
 		return "https://aurora.latvian.dev/logo.gif";
+	}
+
+	public boolean addBackButton()
+	{
+		return true;
 	}
 
 	public void head(Tag head)

@@ -36,6 +36,12 @@ public class OnlinePlayersPage extends HTTPWebPage
 	}
 
 	@Override
+	public boolean addBackButton()
+	{
+		return false;
+	}
+
+	@Override
 	public void body(Tag body)
 	{
 		Tag playerTable = body.table().addClass("player_table");

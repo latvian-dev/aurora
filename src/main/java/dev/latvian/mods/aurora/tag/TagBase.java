@@ -13,7 +13,10 @@ public abstract class TagBase implements WebPage
 
 	public abstract void build(StringBuilder builder);
 
-	public abstract String getAttribute(String key);
+	public String getAttribute(String key)
+	{
+		return "";
+	}
 
 	@Override
 	public String getContent()

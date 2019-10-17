@@ -2,6 +2,7 @@ package dev.latvian.mods.aurora.page;
 
 import dev.latvian.mods.aurora.AuroraHomePageEvent;
 import dev.latvian.mods.aurora.AuroraServer;
+import dev.latvian.mods.aurora.tag.Style;
 import dev.latvian.mods.aurora.tag.Tag;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -30,6 +31,22 @@ public class HomePage extends HTTPWebPage
 	}
 
 	@Override
+	public boolean addBackButton()
+	{
+		return false;
+	}
+
+	@Override
+	public void head(Tag head)
+	{
+		super.head(head);
+		Style s = head.style();
+		s.add("li").set("font-size", "1.5em").set("margin-bottom", "0.2em");
+		s.add("li img").set("height", "1.5em").set("vertical-align", "middle").set("margin-right", "0.2em");
+		s.add("ol").set("list-style", "none");
+	}
+
+	@Override
 	public void body(Tag body)
 	{
 		HomePageEntry entry = new HomePageEntry(getTitle(), "", getIcon());
@@ -46,7 +63,7 @@ public class HomePage extends HTTPWebPage
 
 			if (!e.icon.isEmpty())
 			{
-				li.img(e.icon).style("height", "1em");
+				li.img(e.icon);
 			}
 
 			li.a(e.title, u + "/" + e.url);
