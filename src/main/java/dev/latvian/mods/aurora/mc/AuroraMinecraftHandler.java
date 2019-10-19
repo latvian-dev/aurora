@@ -37,22 +37,16 @@ public class AuroraMinecraftHandler
 
 			if (s[1].equals("online_players"))
 			{
-				event.setPage(new OnlinePlayersPage(event.getAuroraServer().getServer()));
+				event.returnPage(new OnlinePlayersPage(event.getAuroraServer().getServer()));
 			}
 			else if (s[1].equals("online_players.json"))
 			{
-				event.setPage(new OnlinePlayersJson(event.getAuroraServer().getServer()));
+				event.returnPage(new OnlinePlayersJson(event.getAuroraServer().getServer()));
 			}
-			/*else if (s[1].equals("world_info"))
-			{
-				event.setPage(new OnlinePlayersPage(event.getAuroraServer().getServer()));
-			}*/
 			else if (s[1].equals("world_info.json"))
 			{
-				event.setPage(new WorldInfoJson(event.getAuroraServer().getServer()));
+				event.returnPage(new WorldInfoJson(event.getAuroraServer().getServer()));
 			}
-
-			event.setCanceled(true);
 		}
 	}
 }

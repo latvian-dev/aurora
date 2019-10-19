@@ -18,7 +18,6 @@ public class AuroraPageEvent extends Event
 	private final String uri;
 	private final String[] splitUri;
 	private WebPage page;
-	private boolean requiresAuth;
 
 	public AuroraPageEvent(AuroraServer s, FullHttpRequest r, String u)
 	{
@@ -26,7 +25,6 @@ public class AuroraPageEvent extends Event
 		request = r;
 		uri = u;
 		splitUri = uri.split("/");
-		requiresAuth = false;
 	}
 
 	public AuroraServer getAuroraServer()
@@ -60,14 +58,10 @@ public class AuroraPageEvent extends Event
 		page = p;
 	}
 
-	public boolean getRequiresAuth()
+	public void returnPage(WebPage p)
 	{
-		return requiresAuth;
-	}
-
-	public void setRequiresAuth(boolean b)
-	{
-		requiresAuth = b;
+		setPage(page);
+		setCanceled(true);
 	}
 
 	public boolean checkPath(String... path)

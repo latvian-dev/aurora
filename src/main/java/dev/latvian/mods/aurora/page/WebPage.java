@@ -18,4 +18,9 @@ public interface WebPage
 	{
 		return HttpResponseStatus.OK;
 	}
+
+	default boolean getRequiresAuth()
+	{
+		return false;
+	}
 }
