@@ -152,7 +152,7 @@ public class AuroraServer
 				MinecraftForge.EVENT_BUS.post(event);
 				page = event.getPage();
 
-				if (event.getRequiresAuth() && !System.getProperty("AuroraIgnoreAuth", "0").equals("1"))
+				if (page != null && page.getRequiresAuth() && !System.getProperty("AuroraIgnoreAuth", "0").equals("1"))
 				{
 					page = null;
 				}
