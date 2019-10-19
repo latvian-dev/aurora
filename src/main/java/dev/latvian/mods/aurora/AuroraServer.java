@@ -146,16 +146,26 @@ public class AuroraServer
 		}
 		else
 		{
-			AuroraPageEvent event = new AuroraPageEvent(this, request, uri);
-			MinecraftForge.EVENT_BUS.post(event);
-
-			if (event.getPage() == null)
+			try
 			{
-				page = new WebPageNotFound(event.getUri());
-			}
-			else
-			{
+				AuroraPageEvent event = new AuroraPageEvent(this, request, uri);
+				MinecraftForge.EVENT_BUS.post(event);
 				page = event.getPage();
+
+				if (event.getRequiresAuth() && !System.getProperty("AuroraIgnoreAuth", "0").equals("1"))
+				{
+					page = null;
+				}
+
+				if (page == null)
+				{
+					page = new WebPageNotFound(event.getUri());
+				}
+			}
+			catch (Exception ex)
+			{
+				page = new WebPageNotFound("errored");
+				ex.printStackTrace();
 			}
 		}
 

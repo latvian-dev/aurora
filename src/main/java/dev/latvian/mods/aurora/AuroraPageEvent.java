@@ -69,4 +69,22 @@ public class AuroraPageEvent extends Event
 	{
 		requiresAuth = b;
 	}
+
+	public boolean checkPath(String... path)
+	{
+		if (path.length > splitUri.length)
+		{
+			return false;
+		}
+
+		for (int i = 0; i < path.length; i++)
+		{
+			if (!splitUri[i].equals(path[i]))
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
 }
