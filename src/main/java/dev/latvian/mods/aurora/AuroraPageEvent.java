@@ -60,7 +60,7 @@ public class AuroraPageEvent extends Event
 
 	public void returnPage(WebPage p)
 	{
-		setPage(page);
+		setPage(p);
 		setCanceled(true);
 	}
 
