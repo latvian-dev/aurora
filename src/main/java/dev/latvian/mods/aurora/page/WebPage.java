@@ -1,5 +1,6 @@
 package dev.latvian.mods.aurora.page;
 
+import dev.latvian.mods.aurora.PageType;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
 /**
@@ -19,8 +20,8 @@ public interface WebPage
 		return HttpResponseStatus.OK;
 	}
 
-	default boolean getRequiresAuth()
+	default PageType getPageType()
 	{
-		return false;
+		return PageType.ENABLED;
 	}
 }

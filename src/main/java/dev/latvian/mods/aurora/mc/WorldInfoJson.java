@@ -2,6 +2,8 @@ package dev.latvian.mods.aurora.mc;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import dev.latvian.mods.aurora.AuroraConfig;
+import dev.latvian.mods.aurora.PageType;
 import dev.latvian.mods.aurora.page.JsonWebPage;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.WorldServer;
@@ -16,6 +18,12 @@ public class WorldInfoJson extends JsonWebPage
 	public WorldInfoJson(MinecraftServer s)
 	{
 		server = s;
+	}
+
+	@Override
+	public PageType getPageType()
+	{
+		return AuroraConfig.world_info_json;
 	}
 
 	@Override

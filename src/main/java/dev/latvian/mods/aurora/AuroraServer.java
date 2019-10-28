@@ -3,6 +3,7 @@ package dev.latvian.mods.aurora;
 import dev.latvian.mods.aurora.page.HomePage;
 import dev.latvian.mods.aurora.page.WebPage;
 import dev.latvian.mods.aurora.page.WebPageNotFound;
+import dev.latvian.mods.aurora.page.WebPageUnauthorized;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
@@ -79,7 +80,7 @@ public class AuroraServer
 						{
 							if (msg instanceof FullHttpRequest)
 							{
-								handleRequest(ctx, (FullHttpRequest) msg);
+								handleRequest(ch, ctx, (FullHttpRequest) msg);
 							}
 							else
 							{
@@ -125,7 +126,7 @@ public class AuroraServer
 		}
 	}
 
-	private void handleRequest(ChannelHandlerContext ctx, FullHttpRequest request)
+	private void handleRequest(SocketChannel channel, ChannelHandlerContext ctx, FullHttpRequest request)
 	{
 		String uri = request.uri();
 		WebPage page;
@@ -152,9 +153,9 @@ public class AuroraServer
 				MinecraftForge.EVENT_BUS.post(event);
 				page = event.getPage();
 
-				if (page != null && page.getRequiresAuth() && !System.getProperty("AuroraIgnoreAuth", "0").equals("1"))
+				if (page != null && page.getPageType() != PageType.ENABLED && !System.getProperty("AuroraIgnoreAuth", "0").equals("1"))
 				{
-					page = null;
+					page = new WebPageUnauthorized(event.getUri());
 				}
 
 				if (page == null)

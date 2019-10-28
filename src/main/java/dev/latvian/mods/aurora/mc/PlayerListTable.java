@@ -1,5 +1,7 @@
 package dev.latvian.mods.aurora.mc;
 
+import dev.latvian.mods.aurora.AuroraConfig;
+import dev.latvian.mods.aurora.PageType;
 import dev.latvian.mods.aurora.page.HTTPWebPage;
 import dev.latvian.mods.aurora.tag.Tag;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -8,11 +10,11 @@ import net.minecraft.server.MinecraftServer;
 /**
  * @author LatvianModder
  */
-public class OnlinePlayersPage extends HTTPWebPage
+public class PlayerListTable extends HTTPWebPage
 {
 	private final MinecraftServer server;
 
-	public OnlinePlayersPage(MinecraftServer s)
+	public PlayerListTable(MinecraftServer s)
 	{
 		server = s;
 	}
@@ -27,6 +29,12 @@ public class OnlinePlayersPage extends HTTPWebPage
 	public String getDescription()
 	{
 		return "Online Players";
+	}
+
+	@Override
+	public PageType getPageType()
+	{
+		return AuroraConfig.player_list_table;
 	}
 
 	@Override

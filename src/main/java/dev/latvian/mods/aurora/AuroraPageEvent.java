@@ -73,7 +73,7 @@ public class AuroraPageEvent extends Event
 
 		for (int i = 0; i < path.length; i++)
 		{
-			if (!splitUri[i].equals(path[i]))
+			if (!splitUri[i].equals(path[i]) && !path[i].equals("*"))
 			{
 				return false;
 			}

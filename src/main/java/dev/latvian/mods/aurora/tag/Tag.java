@@ -178,9 +178,14 @@ public abstract class Tag extends TagBase
 		return unpaired("img").attr("src", img);
 	}
 
+	public Tag span(String text)
+	{
+		return paired("span", text);
+	}
+
 	public Tag span(String text, String c)
 	{
-		return paired("span", text).addClass(c);
+		return span(text).addClass(c);
 	}
 
 	public Tag br()
